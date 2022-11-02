@@ -1,7 +1,15 @@
-import { Image, Text, View, StyleSheet, ScrollView } from "react-native";
+import {
+  Image,
+  Text,
+  View,
+  StyleSheet,
+  ScrollView,
+  Button,
+} from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
 import { MEALS } from "../data/data";
+import IconButton from "../components/IconButton";
 
 const MealDetails = () => {
   const route = useRoute();
@@ -9,9 +17,16 @@ const MealDetails = () => {
   const { mealId } = route.params;
   const meal = MEALS.find((el) => el.id === mealId);
 
+  const handleHeaderPress = () => {
+    console.log("p");
+  };
+
   useLayoutEffect(() => {
     navigation.setOptions({
       title: meal.title,
+      headerRight: () => (
+        <IconButton onPress={handleHeaderPress} color="white" icon="star" />
+      ),
     });
   }, [mealId]);
 
