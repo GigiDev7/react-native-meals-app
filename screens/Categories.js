@@ -3,8 +3,10 @@ import { FlatList } from "react-native";
 import CategoryGridTile from "../components/CategoryGridTile";
 
 const Categories = ({ navigation }) => {
-  const handleNavigation = () => {
-    navigation.navigate("MealsOverview");
+  const handleNavigation = (catId) => {
+    navigation.navigate("MealsOverview", {
+      categoryId: catId,
+    });
   };
 
   return (
@@ -16,7 +18,7 @@ const Categories = ({ navigation }) => {
         <CategoryGridTile
           color={item.color}
           title={item.title}
-          onPress={handleNavigation}
+          onPress={() => handleNavigation(item.id)}
         />
       )}
     />
