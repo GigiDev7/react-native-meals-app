@@ -7,9 +7,10 @@ import {
   Button,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
-import { useLayoutEffect } from "react";
+import { useContext, useLayoutEffect } from "react";
 import { MEALS } from "../data/data";
 import IconButton from "../components/IconButton";
+import { FavouritesContext } from "../store/context/favourites-context";
 
 const MealDetails = () => {
   const route = useRoute();
@@ -17,15 +18,26 @@ const MealDetails = () => {
   const { mealId } = route.params;
   const meal = MEALS.find((el) => el.id === mealId);
 
+  const favouriteCtx = useContext(FavouritesContext);
+  const isMealFavourite = favouriteCtx.ids.includes(mealId);
+
   const handleHeaderPress = () => {
-    console.log("p");
+    if (isMealFavourite) {
+      favouriteCtx.removeFavourite(mealId);
+    } else {
+      favouriteCtx.addFavourite(mealId);
+    }
   };
 
   useLayoutEffect(() => {
     navigation.setOptions({
       title: meal.title,
       headerRight: () => (
-        <IconButton onPress={handleHeaderPress} color="white" icon="star" />
+        <IconButton
+          onPress={handleHeaderPress}
+          color="white"
+          icon={isMealFavourite ? "star" : "star-outline"}
+        />
       ),
     });
   }, [mealId]);
